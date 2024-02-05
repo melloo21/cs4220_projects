@@ -292,13 +292,19 @@ parse.snv = function(sample.dir) {
 
 # setwd('D:/Drive/Drive/Research/benchmark-sets/training') #your local directory
 # setwd("~/OneDrive/Work/Teaching/CS4220 2022/Project/Data")
+# Local Directory
+setwd('/Users/melloo21/Desktop/NUS Items/CS4220/data')
 
-#test
-parse.df = parse.snv(sample.dir='test')
-write.table(parse.df, 'snv-parse-test.txt', row.names = F, quote = F, sep = '\t')
 
-#real1
-parse.df = parse.snv(sample.dir='icgc-cll')
-write.table(parse.df, 'snv-parse-cll.txt', row.names = F, quote = F, sep = '\t')
+# #test
+# parse.df = parse.snv(sample.dir='test')
+# write.table(parse.df, 'snv-parse-test.txt', row.names = F, quote = F, sep = '\t')
+
+# #real1
+# parse.df = parse.snv(sample.dir='icgc-cll')
+# write.table(parse.df, 'snv-parse-cll.txt', row.names = F, quote = F, sep = '\t')
+
+parse.df = parse.snv(sample.dir='real1')
+write.table(parse.df, 'real-1-parse.txt', row.names = F, quote = F, sep = '\t')
 
 
