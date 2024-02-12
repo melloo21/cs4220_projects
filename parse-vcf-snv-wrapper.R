@@ -9,10 +9,13 @@ parse.snv = function(sample.dir) {
   setwd(paste0(getwd(),'/',sample.dir))
   
   # Features to include 
-  mutect2.features = c('MQ') # The c() returns a 1 dimensional array or concats
-  freebayes.features = c('MQMR')
-  varscan.features = c('SSC', 'SPV')
-  vardict.features = c('SSF', 'MSI')
+  mutect2.features = c('MQ','DP','ECNT','FS','MQ0','MQRankSum','NLOD','PON','QD','ReadPosRankSum','TLOD')
+  freebayes.features = c('MQMR','MQM','AB','ABP','AC','AF','AN','AO','CIGAR','DECOMPOSED','DP','DPB','DPRA','EPP','EPPR','GTI','LEN','MEANALT','MIN_DP','NS','NUMALT','ODDS','PAIRED','PAIREDR','PAO','PQA','PQR','PRO','QA','QR','RO','RPL','RPP','RPPR','RPR','RUN','SAF','SAP','SAR','SOMATIC','SRF','SRP','SRR','TYPE','technology.illumina')
+  varscan.features = c('DP','SOMATIC','SOR','SSF','STATUS')
+  vardict.features = c('SSF', 'MSI','DP')
+  # varscan.features = c('AF','DP','END','LSEQ','MSI','MSILEN','RSEQ','SAMPLE','SHIFT3','
+  # SOMATIC','SOR','SSF','STATUS','TYPE','VD','ANN','LOF','NMD')
+  # vardict.features = c('DP','GPV','SOMATIC','SPV','SS','SSC','ANN','LOF','NMD')
   all.features = c(mutect2.features, freebayes.features, varscan.features, vardict.features)
   
   names.features = c(paste0(mutect2.features,'_Mutect2'),
@@ -65,7 +68,6 @@ parse.snv = function(sample.dir) {
   svp_f<-ScanVcfParam(info=freebayes.features,samples=suppressWarnings(scanVcfHeader(x[[2]])@samples))
   svp_vs<-ScanVcfParam(info=varscan.features, samples=suppressWarnings(scanVcfHeader(x[[3]])@samples))
   svp_vd<-ScanVcfParam(info=vardict.features, samples=suppressWarnings(scanVcfHeader(x[[4]])@samples))
-  print(paste("scanVCFHeader :: ", x[[1]] , " scanned :: ", scanVcfHeader))
   
   # Read in VCF files and features
   vcf_m2<- suppressWarnings(readVcf(tbi[[1]], genome=seqinfo(scanVcfHeader(x[[1]])), svp_m))
@@ -301,15 +303,15 @@ parse.snv = function(sample.dir) {
 setwd('/Users/melloo21/Desktop/NUS Items/CS4220/data')
 
 
-# #test
-# parse.df = parse.snv(sample.dir='test')
-# write.table(parse.df, 'snv-parse-test.txt', row.names = F, quote = F, sep = '\t')
+#test
+parse.df = parse.snv(sample.dir='test')
+write.table(parse.df, 'new-snv-parse-test.txt', row.names = F, quote = F, sep = '\t')
 
 # #real1
 # parse.df = parse.snv(sample.dir='icgc-cll')
 # write.table(parse.df, 'snv-parse-cll.txt', row.names = F, quote = F, sep = '\t')
 
-parse.df = parse.snv(sample.dir='real1')
-write.table(parse.df, 'real-1-parse.txt', row.names = F, quote = F, sep = '\t')
+# parse.df = parse.snv(sample.dir='real1')
+# write.table(parse.df, 'real-1-parse.txt', row.names = F, quote = F, sep = '\t')
 
 
