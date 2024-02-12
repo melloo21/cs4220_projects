@@ -1,14 +1,15 @@
 
 # Parse VCF SNVs
 # Enquiries: Huang Weitai huangwt@gis.a-star.edu.sg
-
+# Shortcuts run all -- Cmd + A + Enter, Line by line - Cmd + Enter
 parse.snv = function(sample.dir) {
   
   start.dir = getwd()
+  print(paste("dir:: ", start.dir))
   setwd(paste0(getwd(),'/',sample.dir))
   
-  # Features to include
-  mutect2.features = c('MQ')
+  # Features to include 
+  mutect2.features = c('MQ') # The c() returns a 1 dimensional array or concats
   freebayes.features = c('MQMR')
   varscan.features = c('SSC', 'SPV')
   vardict.features = c('SSF', 'MSI')
@@ -42,6 +43,7 @@ parse.snv = function(sample.dir) {
   varscan <- Sys.glob("*varscan*vcf.gz")
   vardict <- Sys.glob("*vardict*vcf.gz")
   x<-list(mutect2,freebayes,varscan,vardict)
+  print(paste("vcf list :: ", x))
   
   # Tabulate vcf .tbi files if absent
   # library(Rsamtools)
@@ -55,12 +57,15 @@ parse.snv = function(sample.dir) {
   varscan.tbi <- Sys.glob("*varscan*vcf.gz.tbi")
   vardict.tbi <- Sys.glob("*vardict*vcf.gz.tbi")
   tbi<-list(mutect2.tbi,freebayes.tbi,varscan.tbi,vardict.tbi)
+  print(paste("tbi list :: ", tbi))
   
   # ScanVCF with required parameters
+  # Scan VCF -- info(will get all the values)
   svp_m<-ScanVcfParam(info=mutect2.features, samples=suppressWarnings(scanVcfHeader(x[[1]])@samples))
   svp_f<-ScanVcfParam(info=freebayes.features,samples=suppressWarnings(scanVcfHeader(x[[2]])@samples))
   svp_vs<-ScanVcfParam(info=varscan.features, samples=suppressWarnings(scanVcfHeader(x[[3]])@samples))
   svp_vd<-ScanVcfParam(info=vardict.features, samples=suppressWarnings(scanVcfHeader(x[[4]])@samples))
+  print(paste("scanVCFHeader :: ", x[[1]] , " scanned :: ", scanVcfHeader))
   
   # Read in VCF files and features
   vcf_m2<- suppressWarnings(readVcf(tbi[[1]], genome=seqinfo(scanVcfHeader(x[[1]])), svp_m))
