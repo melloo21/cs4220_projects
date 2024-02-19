@@ -89,8 +89,7 @@ class Classification:
                 n_splits=n_splits
             ),
             n_jobs=-1,
-            refit=True,
-            Verbose=1
+            refit=True
         ).fit(x_train , y_train )
 
         print(f"Model Tuning Completed :: {dt.datetime.now()}")

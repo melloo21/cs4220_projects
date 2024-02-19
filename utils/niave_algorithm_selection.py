@@ -31,11 +31,11 @@ def run_evaluation(filepath):
     # Calculate metrics for each label, and find their average weighted by support (the number of true instances for each label). This alters ‘macro’ to account for label imbalance; it can result in an F-score that is not between precision and recall.
     macro_score = precision_recall_fscore_support(y_true, y_pred, average='macro')[0:3]
     micro_score = precision_recall_fscore_support(y_true, y_pred, average='micro')[0:3]
-    weighted_score = precision_recall_fscore_support(y_true, y_pred, average='weighted')[0:3]
+    binary_score = precision_recall_fscore_support(y_true, y_pred, average='binary')[0:3]
 
     print(" Macro Precision : %5.2f, Recall : %5.2f, F1 : %5.2f" %  macro_score)
-    print(" Macro Precision : %5.2f, Recall : %5.2f, F1 : %5.2f" %  micro_score)
-    print(" Macro Precision : %5.2f, Recall : %5.2f, F1 : %5.2f" %  weighted_score)
+    print(" Micro Precision : %5.2f, Recall : %5.2f, F1 : %5.2f" %  micro_score)
+    print(" binary Precision : %5.2f, Recall : %5.2f, F1 : %5.2f" %  binary_score)
 
     cm = confusion_matrix(y_true, y_pred)
 
@@ -47,4 +47,4 @@ def run_evaluation(filepath):
     ax.set_title('Confusion Matrix'); 
     ax.xaxis.set_ticklabels(['False', 'True']); ax.yaxis.set_ticklabels(['False', 'True'])
 
-    return macro_score, micro_score, weighted_score
+    return macro_score, micro_score, binary_score
