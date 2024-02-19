@@ -3,7 +3,7 @@ import numpy as np
 import datetime as dt
 from typing import Union
 from sklearn import ensemble, svm, tree, linear_model
-from skearn.model_selection import GridSearchCV, RepeatedKFold, KFold, StratifiedKFold
+from sklearn.model_selection import GridSearchCV, RepeatedKFold, KFold, StratifiedKFold
 
 # Fold references: https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection
 
@@ -30,7 +30,7 @@ class Classification:
                 n_splits=n_splits,
                 shuffle=False,
                 random_state=random_state),
-            "str" :StratifiedKFold(
+            "StratifiedKFold" :StratifiedKFold(
                 n_splits=n_splits,
                 shuffle=False,
                 random_state=random_state
