@@ -5,19 +5,12 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import precision_recall_fscore_support, confusion_matrix, ConfusionMatrixDisplay
 
-def performance_evaluate(
+def _draw_confusion(    
     data_set:tuple,
     model_name:str,
-    filepath:str
-    ):
-    """
-        Summary 
-        Args:
-        data_set:tuple -- (x_values, y_values) in numpy array format
-        model_name:str  -- model file name to extract      
-    """
-
-    # Init
+    filepath:str,
+    data_type:str
+):
     x_val , y_true = data_set
     model_name = model_name if ".joblib" in model_name else f"{model_name}.joblib"
     file = f"{filepath}/{model_name}"
@@ -47,7 +40,36 @@ def performance_evaluate(
 
     # labels, title and ticks
     ax.set_xlabel('Predicted labels');ax.set_ylabel('True labels'); 
-    ax.set_title('Confusion Matrix'); 
+    ax.set_title(f'Confusion Matrix for {data_type}'); 
     ax.xaxis.set_ticklabels(['False', 'True']); ax.yaxis.set_ticklabels(['False', 'True'])
+    
+    plt.show()
 
-    return macro_score, micro_score, binary_score
+def performance_evaluate(
+    train_dataset:tuple,
+    valid_dataset:tuple,
+    model_name:str,
+    filepath:str
+    ):
+    """
+        Summary 
+        Args:
+        data_set:tuple -- (x_values, y_values) in numpy array format
+        model_name:str  -- model file name to extract      
+    """
+
+    # Init
+    _draw_confusion(
+        data_set=train_dataset,
+        model_name=model_name,
+        filepath=filepath,
+        data_type="Train data"       
+    )
+    _draw_confusion(
+        data_set=valid_dataset,
+        model_name=model_name,
+        filepath=filepath,
+        data_type="Valid data"       
+    )
+
+    return
