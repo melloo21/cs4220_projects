@@ -5,6 +5,16 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import precision_recall_fscore_support, confusion_matrix, ConfusionMatrixDisplay
 
+def _read_model(
+    model_name:str,
+    filepath:str
+):
+    model_name = model_name if ".joblib" in model_name else f"{model_name}.joblib"
+    file = f"{filepath}/{model_name}"
+    model = joblib.load(file)   
+
+    return model
+
 def _draw_confusion(    
     data_set:tuple,
     model_name:str,
@@ -12,9 +22,10 @@ def _draw_confusion(
     data_type:str
 ):
     x_val , y_true = data_set
-    model_name = model_name if ".joblib" in model_name else f"{model_name}.joblib"
-    file = f"{filepath}/{model_name}"
-    model = joblib.load(file)
+    model = _read_model(
+        model_name=model_name,
+        filepath=filepath
+    )
     
     y_pred = model.predict(x_val)
     # Returns precision/recall/f1 score
