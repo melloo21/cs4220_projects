@@ -1,6 +1,13 @@
 # cs4220_projects
-Repository for projects
+Repository for Project 1 - Mutation calling in cancer
 
-Important websites: https://labs.epi2me.io/notebooks/Introduction_to_Variant_Call_Format_(vcf)_files.html#:~:text=Reading%20VCF%20files%20with%20Python,as%20a%20basic%20tabular%20format.
+### Installation
+```
+git clone 
+cd 
+pip install -r requirements.txt
+```
 
-https://pysam.readthedocs.io/en/latest/usage.html#working-with-vcf-bcf-formatted-files
+### Scripts
+* eda_preprocess/get_missed_rows.ipynb: iterate all rows in .bed file that are skipped by parse-vcf-snv-wrapper.R, extract features and add to parsed output if the row is called by at least one of M2, Freebayes, Vd, Vs regardless of each algorithm's PASS/REJECT label. Needed to increase the number of True labels in training set
+* eda_preprocess/eda.ipynb: load and visualize data
