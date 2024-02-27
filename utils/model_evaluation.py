@@ -3,7 +3,17 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.metrics import precision_recall_fscore_support, confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import precision_recall_fscore_support, confusion_matrix, ConfusionMatrixDisplay, roc_curve, auc
+
+def _read_model(
+    model_name:str,
+    filepath:str
+):
+    model_name = model_name if ".joblib" in model_name else f"{model_name}.joblib"
+    file = f"{filepath}/{model_name}"
+    model = joblib.load(file)   
+
+    return model
 
 def _draw_confusion(    
     data_set:tuple,
@@ -12,9 +22,10 @@ def _draw_confusion(
     data_type:str
 ):
     x_val , y_true = data_set
-    model_name = model_name if ".joblib" in model_name else f"{model_name}.joblib"
-    file = f"{filepath}/{model_name}"
-    model = joblib.load(file)
+    model = _read_model(
+        model_name=model_name,
+        filepath=filepath
+    )
     
     y_pred = model.predict(x_val)
     # Returns precision/recall/f1 score
@@ -73,3 +84,27 @@ def performance_evaluate(
     )
 
     return
+
+def plot_auc_roc(
+    valid_dataset:tuple,
+    model_name:str,
+    filepath:str    
+):
+    x_valid , y_valid = valid_dataset
+    model = _read_model(
+        model_name=model_name,
+        filepath=filepath
+    )
+    model_pred_prob= model.predict_proba(x_valid)
+    preds = model_pred_prob[:,1]
+    fpr, tpr, threshold = roc_curve(y_valid, preds)
+    roc_auc = auc(fpr, tpr)
+    plt.title('Receiver Operating Characteristic')
+    plt.plot(fpr, tpr, 'b', label = 'AUC = %0.2f' % roc_auc)
+    plt.legend(loc = 'lower right')
+    plt.plot([0, 1], [0, 1],'r--')
+    plt.xlim([0, 1])
+    plt.ylim([0, 1])
+    plt.ylabel('True Positive Rate')
+    plt.xlabel('False Positive Rate')
+    plt.show()
